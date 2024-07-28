@@ -1,0 +1,22 @@
+{
+  "name": "pizaapp",
+  "version": "1.0.0",
+  "description": "This is our realtime pizza app",
+  "main": "index.js",
+  "scripts": {
+    "serve":"nodemon server.js",
+    "dev":"nodemon server.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Siddhesh Sawant",
+  "license": "ISC",
+  "dependencies": {
+    "ejs": "^3.1.10",
+    "express": "^4.19.2",
+    "express-ejs-layouts": "^2.5.1"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.4"
+  }
+}
+
