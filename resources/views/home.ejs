@@ -3,9 +3,207 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>🍕Real time app</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- TO GET COMPILED FILE FROM PUBLIC -->
+    <link rel="stylesheet" href="/css/app.css">
 </head>
 <body>
-    HI EJS TEMPLATE
+    <nav class="container mx-auto flex items-center justify-between py-4">
+        <!-- NAVABR IMAGE FOR LEFT -->
+        <div>
+            <img src="/img/logo.png" alt="logo">
+        </div>
+
+        <!-- NAVBAR CONTENTS OF RIGHT -->
+        <div>
+            <ul class="flex items-center ">
+                <li class="ml-6"><a href="#">MENU</a></li>
+                <li class="ml-6"><a href="#">OFFERS</a></li>
+                <li class="ml-6"><a href="#">REGISTERS</a></li>
+                <li class="ml-6"><a href="#">LOGIN</a></li>
+                <li class="ml-6"><a href="#" class="inline-block px-4 py-2 rounded-full">
+                    <img src="/img/cart.png" alt="">
+                </a></li>
+
+            </ul>
+        </div>
+    </nav>
+
+    <!-- DIVIDE THE SESSION INTO TWO PARTS ONE FOR BIG PIZZA IMAGE AND ANOTHER FOR ORDER NOW -->
+    <!-- TO GET SAME WIDTH FOR BOTH THE DIV WE ADD SAME WIDHT CLASSES TO BOTH DIV -->
+     <section class="hero py-16">
+        <div class="container mx-auto flex items-center justify-between">
+            <!-- left for order -->
+            <div class="w-1/2">
+                <h6 class="text-lg "><em>Are you hungry</em></h6>
+                <h1 class="text-6xl font-bold">Don't  wait!</h1>
+            </div>
+
+            <!-- right for image -->
+            <div class="w-1/2">
+                <img src="/img/hero-pizza.png" alt="">
+            </div>
+        </div>
+     </section>
+
+     <!-- MENU PAGE -->
+      <!-- mx-auto for bring whole section in middle of page -->
+      <section class="menu container mx-auto py-8">
+            <h1 class="text-xl font-bold mb-8">All pizzas</h1>
+            <!-- BASICALLY LOWER DIV WRAPS ALL DIV(CARD) INSIDE IT AND GRID BRING ALL CARDS INTO HORIZONTAL DIRECTION SIMILAR TO FLEX AND GRID-COLS-4 BASICALLY STATED 4 COLUMNS IN ONE ROW(HOW MANY CARDS IN ONE ROW) -->
+            <!-- gap-x-12 GIVES GAP BETWEEN COLUMNS gap-y-16 GIVES GAP BETWEEN ROWS -->
+            <div class="grid grid-cols-4 gap-x-12 gap-y-16">
+            <!-- CARDS FOR DIFFERENT PIZZAS-->
+             <div class="w-64">
+                <img class="h-42 mb-4 mx-auto" src="/img/pizza.png" alt="NO PIZZA">
+                <div class="text-center">
+                    <h2 class="mb-4 text-lg">Margherita</h2>
+                    <span class="size py-1 px-4 rounded-full uppercase text-xs">small</span>
+                   
+                    <!-- wrapper used for wrappping span and button classes and then making it flex -->
+                     <div class="flex items-center justify-around mt-6">
+                        <span class="font-bold text-lg">Rs.250</span>
+                        <button class="add-to-cart py-1 px-6 rounded-full flex items-center font-bold">
+                            <span>+</span>
+                            <span class="ml-4">Add</span>
+                        </button>
+                     </div>
+                     
+                </div>
+             </div>
+
+             <div class="w-64">
+                <img class="h-42 mb-4 mx-auto" src="/img/pizza.png" alt="NO PIZZA">
+                <div class="text-center">
+                    <h2 class="mb-4 text-lg">Margherita</h2>
+                    <span class="size py-1 px-4 rounded-full uppercase text-xs">small</span>
+                   
+                    <!-- wrapper used for wrappping span and button classes and then making it flex -->
+                     <div class="flex items-center justify-around mt-6">
+                        <span class="font-bold text-lg">Rs.250</span>
+                        <button class="add-to-cart py-1 px-6 rounded-full flex items-center font-bold">
+                            <span>+</span>
+                            <span class="ml-4">Add</span>
+                        </button>
+                     </div>
+                     
+                </div>
+             </div>
+
+             <div class="w-64">
+                <img class="h-42 mb-4 mx-auto" src="/img/pizza.png" alt="NO PIZZA">
+                <div class="text-center">
+                    <h2 class="mb-4 text-lg">Margherita</h2>
+                    <span class="size py-1 px-4 rounded-full uppercase text-xs">small</span>
+                   
+                    <!-- wrapper used for wrappping span and button classes and then making it flex -->
+                     <div class="flex items-center justify-around mt-6">
+                        <span class="font-bold text-lg">Rs.250</span>
+                        <button class="add-to-cart py-1 px-6 rounded-full flex items-center font-bold">
+                            <span>+</span>
+                            <span class="ml-4">Add</span>
+                        </button>
+                     </div>
+                     
+                </div>
+             </div>
+
+             <div class="w-64">
+                <img class="h-42 mb-4 mx-auto" src="/img/pizza.png" alt="NO PIZZA">
+                <div class="text-center">
+                    <h2 class="mb-4 text-lg">Margherita</h2>
+                    <span class="size py-1 px-4 rounded-full uppercase text-xs">small</span>
+                   
+                    <!-- wrapper used for wrappping span and button classes and then making it flex -->
+                     <div class="flex items-center justify-around mt-6">
+                        <span class="font-bold text-lg">Rs.250</span>
+                        <button class="add-to-cart py-1 px-6 rounded-full flex items-center font-bold">
+                            <span>+</span>
+                            <span class="ml-4">Add</span>
+                        </button>
+                     </div>
+                     
+                </div>
+             </div>
+
+             <div class="w-64">
+                <img class="h-42 mb-4 mx-auto" src="/img/pizza.png" alt="NO PIZZA">
+                <div class="text-center">
+                    <h2 class="mb-4 text-lg">Margherita</h2>
+                    <span class="size py-1 px-4 rounded-full uppercase text-xs">small</span>
+                   
+                    <!-- wrapper used for wrappping span and button classes and then making it flex -->
+                     <div class="flex items-center justify-around mt-6">
+                        <span class="font-bold text-lg">Rs.250</span>
+                        <button class="add-to-cart py-1 px-6 rounded-full flex items-center font-bold">
+                            <span>+</span>
+                            <span class="ml-4">Add</span>
+                        </button>
+                     </div>
+                     
+                </div>
+             </div>
+
+             <div class="w-64">
+                <img class="h-42 mb-4 mx-auto" src="/img/pizza.png" alt="NO PIZZA">
+                <div class="text-center">
+                    <h2 class="mb-4 text-lg">Margherita</h2>
+                    <span class="size py-1 px-4 rounded-full uppercase text-xs">small</span>
+                   
+                    <!-- wrapper used for wrappping span and button classes and then making it flex -->
+                     <div class="flex items-center justify-around mt-6">
+                        <span class="font-bold text-lg">Rs.250</span>
+                        <button class="add-to-cart py-1 px-6 rounded-full flex items-center font-bold">
+                            <span>+</span>
+                            <span class="ml-4">Add</span>
+                        </button>
+                     </div>
+                     
+                </div>
+             </div>
+
+             <div class="w-64">
+                <img class="h-42 mb-4 mx-auto" src="/img/pizza.png" alt="NO PIZZA">
+                <div class="text-center">
+                    <h2 class="mb-4 text-lg">Margherita</h2>
+                    <span class="size py-1 px-4 rounded-full uppercase text-xs">small</span>
+                   
+                    <!-- wrapper used for wrappping span and button classes and then making it flex -->
+                     <div class="flex items-center justify-around mt-6">
+                        <span class="font-bold text-lg">Rs.250</span>
+                        <button class="add-to-cart py-1 px-6 rounded-full flex items-center font-bold">
+                            <span>+</span>
+                            <span class="ml-4">Add</span>
+                        </button>
+                     </div>
+                     
+                </div>
+             </div>
+
+             <div class="w-64">
+                <img class="h-42 mb-4 mx-auto" src="/img/pizza.png" alt="NO PIZZA">
+                <div class="text-center">
+                    <h2 class="mb-4 text-lg">Margherita</h2>
+                    <span class="size py-1 px-4 rounded-full uppercase text-xs">small</span>
+                   
+                    <!-- wrapper used for wrappping span and button classes and then making it flex -->
+                     <div class="flex items-center justify-around mt-6">
+                        <span class="font-bold text-lg">Rs.250</span>
+                        <button class="add-to-cart py-1 px-6 rounded-full flex items-center font-bold">
+                            <span>+</span>
+                            <span class="ml-4">Add</span>
+                        </button>
+                     </div>
+                     
+                </div>
+             </div>
+
+            </div>
+      </section>
+    <script src="/js/app.js"></script>
 </body>
 </html>
