@@ -5,10 +5,10 @@ body{
     font-family:'Lato',sans-serif;
     -webkit-font-smoothing:antialiased;
     color:$dark;
-    height: 4000px;
+    // height: 400px;
 }
 
-//cart timage
+//cart image hover effect
 nav li:last-child a{
     background: $primary;
     &:hover{
@@ -25,7 +25,7 @@ section.hero{
     background: $secondary;
 }
 
-// TO CHAGE THE BACKGROUND COLOR OF SMALL TEXT
+//TO CHANGE THE BACKGROUND COLOR OF SMALL TEXT
 .size{
     background:$secondary;
 }
@@ -40,5 +40,35 @@ section.hero{
         border-color: $pure;
         color:$pure;
     }
+}
 
+// FOR ALL BUTTONS CLASS
+.btn-primary{
+    background: $primary;
+    transition: $smooth;
+    &:hover{
+        background:$primary-hover;
+
+    }
+}
+
+// CART PAGE CSS 
+section.cart{
+    background: $secondary;
+    .amount{
+        color:$primary;
+    }
+}
+
+//LOGIN PAGE
+// calc(100vh-86px) calc(WHOLE_PAGE_HEIGHT-NAVABAR_HEIGHT)
+section.login{
+    background:$secondary;
+    min-height:calc(100vh - 86px);
+    a{
+        color:$primary;
+        &:hover{
+            color:$primary-hover
+        }
+    }
 }

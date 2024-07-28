@@ -13,11 +13,6 @@ const PORT=process.env.PORT ||3000
 //IT ACTS AS A MIDDLEEWARE TO TELL EXPRESS WHERE WE NEED TO SEARCH STATIC FILE
 app.use(express.static(path.join(__dirname,"/public")))
 
-//ROUTES
-app.get("/",function(req,res){
-    // res.send("HELLO FROM SERVER")
-    res.render("home")
-})
 
 //SET VIEW ENGINE AND PATH FOR VIEW
 //The app.set('views', path.join(__dirname, '/resources/views')) line in an Express.js application specifies the directory where the view templates (e.g., EJS files) are located.
@@ -25,8 +20,37 @@ app.get("/",function(req,res){
 app.use(expressLayout)
 app.set('views',path.join(__dirname,'/resources/views'))
 
+
 //VIEW ENGINE
 app.set("view engine","ejs")
+
+
+//ROUTES
+//BAISCALLY ROUTES SHOULD COME AFTER VIEW ENGINE AND MIDDLEWARE
+//TO MAKE LAYOUT WORK WE NEED TO DEFIEN IT AFTER VIEW ENGINES AND MIDDLEWARE
+app.get("/",function(req,res){
+    // res.send("HELLO FROM SERVER")
+    res.render("home")
+})
+
+//CART PAGE
+app.get("/cart",function(req,res){
+    //DEFINE THE PATH WHERE CART IS LOCATED AS IF WE SEE BELOW APP.SET("VIEWS") WE HAVE PATH TILL VIEWS
+    res.render("customers/cart")
+})
+
+//LOGIN PAGE
+app.get("/login",function(req,res){
+    //DEFINE THE PATH WHERE CART IS LOCATED AS IF WE SEE BELOW APP.SET("VIEWS") WE HAVE PATH TILL VIEWS
+    res.render("auth/login")
+})
+
+//REGISTER PAGE
+app.get("/register",function(req,res){
+    //DEFINE THE PATH WHERE CART IS LOCATED AS IF WE SEE BELOW APP.SET("VIEWS") WE HAVE PATH TILL VIEWS
+    res.render("auth/register")
+})
+
 
 //PORT LISTENING
 app.listen(PORT,()=>{
