@@ -24,17 +24,20 @@
             <!-- BASICALLY LOWER DIV WRAPS ALL DIV(CARD) INSIDE IT AND GRID BRING ALL CARDS INTO HORIZONTAL DIRECTION SIMILAR TO FLEX AND GRID-COLS-4 BASICALLY STATED 4 COLUMNS IN ONE ROW(HOW MANY CARDS IN ONE ROW) -->
             <!-- gap-x-12 GIVES GAP BETWEEN COLUMNS gap-y-16 GIVES GAP BETWEEN ROWS -->
             <div class="grid grid-cols-4 gap-x-12 gap-y-16">
-            <!-- CARDS FOR DIFFERENT PIZZAS-->
+            
+               <!-- CARDS FOR DIFFERENT PIZZAS-->
+             <!-- GETTING ALL PIZZA DATA FROM pizzas ARRAY OBJECTS -->
+            <%pizzas.forEach(function(pizza){%>
              <div class="w-64">
-                <img class="h-42 mb-4 mx-auto" src="/img/pizza.png" alt="NO PIZZA">
+                <img class="h-42 mb-4 mx-auto" src="/img/<%= pizza.image %>" alt="NO PIZZA">
                 <div class="text-center">
-                    <h2 class="mb-4 text-lg">Margherita</h2>
-                    <span class="size py-1 px-4 rounded-full uppercase text-xs">small</span>
+                    <h2 class="mb-4 text-lg"><%= pizza.name %></h2>
+                    <span class="size py-1 px-4 rounded-full uppercase text-xs"><%= pizza.size %></span>
                    
                     <!-- wrapper used for wrappping span and button classes and then making it flex -->
                      <div class="flex items-center justify-around mt-6">
-                        <span class="font-bold text-lg">Rs.250</span>
-                        <button class="add-to-cart py-1 px-6 rounded-full flex items-center font-bold">
+                        <span class="font-bold text-lg">₹<%= pizza.price%></span>
+                        <button data-pizza="<%= JSON.stringify(pizza) %>" class="add-to-cart py-1 px-6 rounded-full flex items-center font-bold">
                             <span>+</span>
                             <span class="ml-4">Add</span>
                         </button>
@@ -42,132 +45,8 @@
                      
                 </div>
              </div>
+             <%})%>
 
-             <div class="w-64">
-                <img class="h-42 mb-4 mx-auto" src="/img/pizza.png" alt="NO PIZZA">
-                <div class="text-center">
-                    <h2 class="mb-4 text-lg">Margherita</h2>
-                    <span class="size py-1 px-4 rounded-full uppercase text-xs">small</span>
-                   
-                    <!-- wrapper used for wrappping span and button classes and then making it flex -->
-                     <div class="flex items-center justify-around mt-6">
-                        <span class="font-bold text-lg">Rs.250</span>
-                        <button class="add-to-cart py-1 px-6 rounded-full flex items-center font-bold">
-                            <span>+</span>
-                            <span class="ml-4">Add</span>
-                        </button>
-                     </div>
-                     
-                </div>
-             </div>
-
-             <div class="w-64">
-                <img class="h-42 mb-4 mx-auto" src="/img/pizza.png" alt="NO PIZZA">
-                <div class="text-center">
-                    <h2 class="mb-4 text-lg">Margherita</h2>
-                    <span class="size py-1 px-4 rounded-full uppercase text-xs">small</span>
-                   
-                    <!-- wrapper used for wrappping span and button classes and then making it flex -->
-                     <div class="flex items-center justify-around mt-6">
-                        <span class="font-bold text-lg">Rs.250</span>
-                        <button class="add-to-cart py-1 px-6 rounded-full flex items-center font-bold">
-                            <span>+</span>
-                            <span class="ml-4">Add</span>
-                        </button>
-                     </div>
-                     
-                </div>
-             </div>
-
-             <div class="w-64">
-                <img class="h-42 mb-4 mx-auto" src="/img/pizza.png" alt="NO PIZZA">
-                <div class="text-center">
-                    <h2 class="mb-4 text-lg">Margherita</h2>
-                    <span class="size py-1 px-4 rounded-full uppercase text-xs">small</span>
-                   
-                    <!-- wrapper used for wrappping span and button classes and then making it flex -->
-                     <div class="flex items-center justify-around mt-6">
-                        <span class="font-bold text-lg">Rs.250</span>
-                        <button class="add-to-cart py-1 px-6 rounded-full flex items-center font-bold">
-                            <span>+</span>
-                            <span class="ml-4">Add</span>
-                        </button>
-                     </div>
-                     
-                </div>
-             </div>
-
-             <div class="w-64">
-                <img class="h-42 mb-4 mx-auto" src="/img/pizza.png" alt="NO PIZZA">
-                <div class="text-center">
-                    <h2 class="mb-4 text-lg">Margherita</h2>
-                    <span class="size py-1 px-4 rounded-full uppercase text-xs">small</span>
-                   
-                    <!-- wrapper used for wrappping span and button classes and then making it flex -->
-                     <div class="flex items-center justify-around mt-6">
-                        <span class="font-bold text-lg">Rs.250</span>
-                        <button class="add-to-cart py-1 px-6 rounded-full flex items-center font-bold">
-                            <span>+</span>
-                            <span class="ml-4">Add</span>
-                        </button>
-                     </div>
-                     
-                </div>
-             </div>
-
-             <div class="w-64">
-                <img class="h-42 mb-4 mx-auto" src="/img/pizza.png" alt="NO PIZZA">
-                <div class="text-center">
-                    <h2 class="mb-4 text-lg">Margherita</h2>
-                    <span class="size py-1 px-4 rounded-full uppercase text-xs">small</span>
-                   
-                    <!-- wrapper used for wrappping span and button classes and then making it flex -->
-                     <div class="flex items-center justify-around mt-6">
-                        <span class="font-bold text-lg">Rs.250</span>
-                        <button class="add-to-cart py-1 px-6 rounded-full flex items-center font-bold">
-                            <span>+</span>
-                            <span class="ml-4">Add</span>
-                        </button>
-                     </div>
-                     
-                </div>
-             </div>
-
-             <div class="w-64">
-                <img class="h-42 mb-4 mx-auto" src="/img/pizza.png" alt="NO PIZZA">
-                <div class="text-center">
-                    <h2 class="mb-4 text-lg">Margherita</h2>
-                    <span class="size py-1 px-4 rounded-full uppercase text-xs">small</span>
-                   
-                    <!-- wrapper used for wrappping span and button classes and then making it flex -->
-                     <div class="flex items-center justify-around mt-6">
-                        <span class="font-bold text-lg">Rs.250</span>
-                        <button class="add-to-cart py-1 px-6 rounded-full flex items-center font-bold">
-                            <span>+</span>
-                            <span class="ml-4">Add</span>
-                        </button>
-                     </div>
-                     
-                </div>
-             </div>
-
-             <div class="w-64">
-                <img class="h-42 mb-4 mx-auto" src="/img/pizza.png" alt="NO PIZZA">
-                <div class="text-center">
-                    <h2 class="mb-4 text-lg">Margherita</h2>
-                    <span class="size py-1 px-4 rounded-full uppercase text-xs">small</span>
-                   
-                    <!-- wrapper used for wrappping span and button classes and then making it flex -->
-                     <div class="flex items-center justify-around mt-6">
-                        <span class="font-bold text-lg">Rs.250</span>
-                        <button class="add-to-cart py-1 px-6 rounded-full flex items-center font-bold">
-                            <span>+</span>
-                            <span class="ml-4">Add</span>
-                        </button>
-                     </div>
-                     
-                </div>
-             </div>
 
             </div>
       </section>
