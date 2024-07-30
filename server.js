@@ -8,6 +8,7 @@ const app=express()
 const session=require("express-session")
 const flash=require('express-flash')
 const MongoDbStore=require('connect-mongo')
+const passport=require("passport")
 
 
 //HERE PROCESS WILL SEARCH IN ENV TO GET THE PORT AND SET IT THERE
@@ -30,7 +31,6 @@ try{
 catch(err){
     console.log('MongoDB connection error:', err);
 }
-
 
 
 //SESSIONID STORE IN DATABASE
@@ -58,14 +58,24 @@ app.use(session({
 
 }))
 
+//PASSPORT CONFIG
+//IMPORT INIT FUNCTION THAT HAS BEEN EXPORTED FROM passport.js
+const passportInit=require("./app/config/passport.js")
+//CALLED PASSPORT INIT FUNCITON AND PASSED passport argument to it
+passportInit(passport)
+app.use(passport.initialize())
+app.use(passport.session())
+
 //EXPRESS FLASH 
 //Express Flash is used to provide flash messages in your Express.js application. Flash messages are temporary messages that can be displayed to the user, such as success or error messages.
 app.use(flash())
 
 //GLOBAL VARIABLE APPLIED TO ALL
 //MAKE GLOBAL MIDDLEWARE SO THAT EVERY EJS FILE ABLE TO GET SESSION DATA
+//In Express applications that use authentication middleware, such as Passport.js, req.user is a property of the req (request) object that contains information about the currently logged-in user.
     app.use(function(req,res,next){
         res.locals.session=req.session
+        res.locals.user=req.user
         next()
     })
 
@@ -74,6 +84,7 @@ app.use(flash())
 //IT ACTS AS A MIDDLEEWARE TO TELL EXPRESS WHERE WE NEED TO SEARCH STATIC FILE
 app.use(express.static(path.join(__dirname,"/public")))
 //Express uses middleware (like express.json()) to parse the body of the request. This middleware converts the JSON data into a JavaScript object that you can easily work with.
+app.use(express.urlencoded({extended:false}))
 app.use(express.json())
 
 //SET VIEW ENGINE AND PATH FOR VIEW

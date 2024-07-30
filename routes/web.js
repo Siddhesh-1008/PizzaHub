@@ -4,6 +4,7 @@ const homeController=require("../app/http/controllers/homeController")
 const cartController=require("../app/http/controllers/customers/cartController")
 const authController=require("../app/http/controllers/authController")
 
+const guest=require("../app/http/middlewares/guest")
 
 //DEFINING ALL ROUTES HERE INSIDE FUNCITON 
 //function initRoutes(app) RECEIVE A PARAMETER app
@@ -22,11 +23,21 @@ function initRoutes(app){
     app.post("/update-cart",cartController().update)
 
     //LOGIN PAGE
-    app.get("/login",authController().login)
+    //ADD MIDDLEWARE SO THAT IF USER IS AUTHENTICATED(MEANS LOGGED IN ) HE CAN GO TO ONLY MENU PAGE NOT OTHER Tha THAT 
+    //IF USER IS NOT AUTHENTICATED THEN IT CAN GO FOR NEXT REQUEST THAT IS authController().login OR authController().register
+    app.get("/login",guest,authController().login)
+    //LOGIN POST 
+    app.post("/login",authController().postLogin)
     
     //REGISTER PAGE
-    app.get("/register",authController().register)
+    app.get("/register",guest,authController().register)
+    //GET DATA FROM INPUT TAGS REGISTER POST
+    app.post("/register",authController().postRegister)
+
+    //LOGOUT PAGE
+    app.post("/logout",authController().logout)
 }
+
 
 //EXPORT THE MODULE(THAT CONTAINS FUNCTION) TO REQUIRE IT IN SERVER.JS
 module.exports=initRoutes
