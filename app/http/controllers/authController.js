@@ -10,6 +10,17 @@ function authController(){
             res.render("auth/login")
         },
         postLogin:function(req,res,next){
+            console.log("RC->",req.session)
+            const rc=req.session.cart
+
+            const{email,password}=req.body
+            //SETTING CUTOM MAESSAGE
+            //VALIDATE REQUEST(IF ANY ONE OF THETHING IS NOT PRESENT)
+            if(!email || !password)
+                {
+                    req.flash("error","ALL FIELDS ARE REQUIRED")
+                }
+                console.log(req.body)
             //HERE PASSPORT.AUTHENTICATE USE TO GET DONE() MEEAGES
             //HERE done(null or err,user or false,message:{}) IS SIMILAR TO  (err,user,info)
             //BASICALLY PASSPORT.JS RETURNS VALUE AND HRE WE ARE ACCEPTING IT
@@ -21,6 +32,7 @@ function authController(){
                 }
                 
                 // IF done returns(null,false,{message:""}) MEANS user IS FALSE 
+                //MEANS USER IS NOT FOUND OR PASSWORD DOESNT MATCHES
                 if(!user){
                     console.log(info.message)
                     req.flash('error',info.message)
@@ -32,13 +44,21 @@ function authController(){
                 //In Passport.js, req.logIn is a method used to log in a user and establish a session. 
                 //And as well as set set user _id in session using passport.serializeUser
                 // It is a part of the Express request object (req) and is used to manually establish a session for a user after successful authentication.
+                const cartData=req.session.cart;
                 req.logIn(user,function(err){
                     if(err){
                     req.flash("error",info.message)
                     return next(err)
                     }
+                    req.session.cart = cartData;         
                     // REDIRECT TO HOME PAGE
-                    return res.redirect("/")
+                    if (req.user.role==="customer"){
+                        return res.redirect("/")
+                    }
+                    else{
+                        return res.redirect("/admin/orders")
+                    }
+                    
                 })
             })(req,res,next)
 
@@ -106,21 +126,30 @@ function authController(){
 
 
         },
-        logout:function(req,res){
-            //DESTROY THE SESSION ONCE LOGOUT
-            req.logout(
-                function(err)
-                {
-                    if (err) {
-                        return next(err);
-                    }
-                    req.session.destroy(function(err) {
-                        if (err) {
-                            return next(err);
-                            }
-                        res.redirect('/login'); 
-                    })
-                 })
+        logout:function(req,res,next){
+            //STROING UR CART DATA IN CART FIRST 
+            const cartData = req.session.cart;
+    
+            console.log('Session before logout:', req.session);
+            
+            //REQ.LOGOUT() BASICALLY DELETES PASPPORT FILED FROM SESSIONS
+            req.logout(function(err) {
+                if (err) {
+                    return next(err);
+                }
+        
+                // // Clear only Passport data
+                // req.session.passport = {};
+
+                //STORE THE PREVIOUS CART DATA AGAIN REQ.SESSION.CART
+                // Restore the cart data
+                 req.session.cart = cartData;
+
+                // Optionally preserve cart and other session data
+                console.log('Session after clearing passport:', req.session);
+                // Redirect to the login page
+                res.redirect('/login');
+            });
             
 
         }

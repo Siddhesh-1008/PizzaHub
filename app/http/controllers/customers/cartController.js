@@ -9,6 +9,7 @@ function cartController(){
         },
         update:function(req,res)
         {
+            
             //req.session is an object where you can store data specific to the current user’s session. For example, you might store user login status,
             //req.session.cart: This is a custom property you might define on the req.session object to store the user's shopping cart data.
             //WITH THE HELP OF req.session.cart we are able to store cart data in session
@@ -34,6 +35,8 @@ function cartController(){
                 //req.body contains the data sent in the body of the HTTP request. For POST requests, the data is included in the request body
                 //middleware like express.json() parses the JSON data from the request body and makes it available in req.body
                 //IF CART DOESNT HAVE THAT ITEM THEN ADD NEW ITEM IN CART AND INCREMENT THE QTY
+                //BASICALLY ADD ITEM,QTY TO PARTICULAR USERID cart.items[key_id]
+                // AND TOTAL_QTY,TOTAL_PRICE 
                 cart.items[req.body._id]={
                     item:req.body,
                     qty:1
@@ -42,7 +45,7 @@ function cartController(){
                 cart.totalPrice=cart.totalPrice+req.body.price
             }
             else
-            {
+            { 
                 //IF PIZZA ID IS ALREADY PRESNT TN THE CART 
                 //THEN INCREASE THE QTY BY 1
                 //SIMILAR FOR PRICE AND TOTAL QTY
@@ -53,6 +56,7 @@ function cartController(){
             }
             //TOTAL QTY ARE BASICALLY TOTAL NUMBER OF PIZZAS ADDED ALL =TOGETHER
             //QTY REFERS TO QTY OF THAT CLICKED USER PIZZA
+            console.log("SESSION DEKHO",req.session)
             console.log("SERVER SIDE CONSOLE->",req.session.cart)
             return res.json({totalQty:req.session.cart.totalQty})
             

@@ -10,8 +10,8 @@ function homeController()
     return{
         index:async function(req,res)
         {
-        
         // TO GET ALL THE IDENTITIES OF MENU MODEL
+        
         const pizzas=await MenuModel.find() 
         return res.render("home",{pizzas:pizzas})   
         }

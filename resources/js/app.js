@@ -1,6 +1,9 @@
 console.log("HELLO FROM APP.JS")
 import axios from "axios"
 import Noty from "noty";
+//IMPORT ADMIN.JS HERE
+//import{name what u had exported from admin.js} from "path where the admin.js is located "
+import initAdmin from './admin'
 
 // QUERYSELECTOR ALL RETURNS ARRAY OF BUTTONS THAT HAS CLASS .add-to-cart
 let addToCart = document.querySelectorAll(".add-to-cart");
@@ -35,7 +38,9 @@ function updateCart(pizza){
     });
 }
 
+
 addToCart.forEach(function(btn){
+    console.log("BC")
     console.log(btn);
     btn.addEventListener('click', function(e){
         console.log(e);
@@ -50,6 +55,18 @@ addToCart.forEach(function(btn){
         updateCart(pizza)
     });
 });
+
+//ORDER NOW LOGIC
+//BASICALLY WILL SHOW THE SUCCESS "ORDERED PALCED SUCCESSFULLY" MSG ONLY FOR 2 SECONDS
+const alertMsg=document.querySelector("#success-alert")
+if(alertMsg){
+    setTimeout(()=>{
+        alertMsg.remove()
+    },2000)
+}
+
+//THIS WILL CALLED initAdmin FUNCTION WHICH HAS BENN EXPORTED BY ADMIN.JS MODEL
+initAdmin()
 
 
 

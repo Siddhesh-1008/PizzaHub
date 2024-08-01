@@ -1,0 +1,71 @@
+<section class="orders light-section">
+    <div class="container mx-auto pt-12">
+        
+        <h1 class="font-bold text-lg mb-4">ALL ORDERS</h1>
+        
+        <%if (messages.success){%>
+        <div id="success-alert" style="display: flex; background-color: rgb(98, 202, 98); color: white;" class="flex items-center text-sm font-bold px-4 py-3" role="alert">
+            <svg class="fill-current w-4 h-4 mr-2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
+                <path d="M10 15l-3.5-3.5 1.41-1.41L10 12.17l4.09-4.09L15.5 9.5 10 15z" />
+            </svg>
+            <p><%=messages.success%></p>
+        </div>
+        <%}else{%>
+            <div id="success-alert" style="display: flex; background-color: rgb(98, 202, 98); color: white;" class="flex items-center text-sm font-bold px-4 py-3" role="alert">
+                <svg class="fill-current w-4 h-4 mr-2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
+                    <path d="M10 15l-3.5-3.5 1.41-1.41L10 12.17l4.09-4.09L15.5 9.5 10 15z" />
+                </svg>
+                <p><%=messages.error%></p>
+            </div>
+        <%}%>
+        <!-- TABLE SHOWING ORDERS THAT HAS BEEN ORDER BY USER -->
+        <table class="w-full table-auto bg-white">
+            <!-- thead CONTAINS HEADINGS -->
+            <thead>
+                <tr>
+                    <!-- COLUMN HEADING NAMES -->
+                    <!--th REPRESENT ORDERS,ADDRESS,TIME HEADING NAMES -->
+                    <th class="px-4 py-2 text-left">Orders</th>
+                    <th class="px-4 py-2 text-left">Address</th>
+                    <th class="px-4 py-2 text-left">Time</th>
+                    <th class="px-4 py-2 text-left">Phone no.</th>
+
+                </tr>
+            </thead>
+
+            <!-- ADDING DATA TO EACH COLUMNS -->
+            <tbody>
+                <%if(orders.length){%>
+                    <%orders.forEach((order)=>{%>
+                        <!-- FIRST ROW tr USED FOR CREATING SINGLE ROWS  -->
+                        <tr>
+                            <!-- COLUMN 1 DATA -->
+                            <td class="border px-4 py-2">
+                                    <a class="link" href="/"><%= order.customerId%></a>
+                            </td>
+                            <!-- COLUMN 2 DATA -->
+                            <td class="border px-4 py-2">
+                                <%=order.address%>
+                            </td>
+                            <!-- COLUMN 3 DATA -->
+                            <!-- GET MOMENT FROM ORDERCONTROLLER AND THEN FORMAT -->
+                            <td class="border px-4 py-2">
+                            <%= moment(order.createdAt).format('hh:mm A')%>
+                            </td>
+                            <!-- COLUMN 4 DATA -->
+                            <td class="border px-4 py-2">
+                                <%=order.phone%>
+                            </td>
+                        </tr>
+                    <%})%>
+                <%}else{%>    
+                    <tr>
+                        <th class="px-4 py-2 text-left">NO ORDERES</th>
+                    </tr>
+                <%}%>
+            </tbody>
+
+        </table>
+
+    </div>
+</section>

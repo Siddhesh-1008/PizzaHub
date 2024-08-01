@@ -66,9 +66,15 @@ passportInit(passport)
 app.use(passport.initialize())
 app.use(passport.session())
 
+
 //EXPRESS FLASH 
 //Express Flash is used to provide flash messages in your Express.js application. Flash messages are temporary messages that can be displayed to the user, such as success or error messages.
 app.use(flash())
+
+app.use((req, res, next) => {
+    console.log("-->",req.session);
+    next();
+});
 
 //GLOBAL VARIABLE APPLIED TO ALL
 //MAKE GLOBAL MIDDLEWARE SO THAT EVERY EJS FILE ABLE TO GET SESSION DATA
@@ -79,13 +85,15 @@ app.use(flash())
         next()
     })
 
+
 //MIDDLEWARE
 //TO ACCESS STATIC FILES IN PUBLIC
 //IT ACTS AS A MIDDLEEWARE TO TELL EXPRESS WHERE WE NEED TO SEARCH STATIC FILE
 app.use(express.static(path.join(__dirname,"/public")))
 //Express uses middleware (like express.json()) to parse the body of the request. This middleware converts the JSON data into a JavaScript object that you can easily work with.
-app.use(express.urlencoded({extended:false}))
 app.use(express.json())
+app.use(express.urlencoded({extended:false}))
+
 
 //SET VIEW ENGINE AND PATH FOR VIEW
 //The app.set('views', path.join(__dirname, '/resources/views')) line in an Express.js application specifies the directory where the view templates (e.g., EJS files) are located.
