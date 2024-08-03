@@ -8,7 +8,10 @@ const app=express()
 const session=require("express-session")
 const flash=require('express-flash')
 const MongoDbStore=require('connect-mongo')
-const passport=require("passport")
+const passport=require("passport") 
+//EVENT EMITTER
+const Emitter = require('events')
+
 
 
 //HERE PROCESS WILL SEARCH IN ENV TO GET THE PORT AND SET IT THERE
@@ -40,6 +43,11 @@ let mongoStore=MongoDbStore.create({
     collection:"sessions"
 })
 
+//EVENT EMITTER
+const eventEmitter = new Emitter()
+//BIND EVENT EMITTER WITH APP
+//app.set("ur choice key","instance that has been given above")
+app.set('eventEmitter', eventEmitter)
 
 //SESSION CONFIG 
 //ACT AS MIDDLEWARE In an Express.js application, you use middleware (like express-session) to handle sessions. This middleware adds a session object to the req (request) object in your route handlers.
@@ -71,6 +79,14 @@ app.use(passport.session())
 //Express Flash is used to provide flash messages in your Express.js application. Flash messages are temporary messages that can be displayed to the user, such as success or error messages.
 app.use(flash())
 
+//MIDDLEWARE
+//TO ACCESS STATIC FILES IN PUBLIC
+//IT ACTS AS A MIDDLEEWARE TO TELL EXPRESS WHERE WE NEED TO SEARCH STATIC FILE
+app.use(express.static(path.join(__dirname,"/public")))
+//Express uses middleware (like express.json()) to parse the body of the request. This middleware converts the JSON data into a JavaScript object that you can easily work with.
+app.use(express.json())
+app.use(express.urlencoded({extended:false}))
+
 app.use((req, res, next) => {
     console.log("-->",req.session);
     next();
@@ -85,23 +101,12 @@ app.use((req, res, next) => {
         next()
     })
 
-
-//MIDDLEWARE
-//TO ACCESS STATIC FILES IN PUBLIC
-//IT ACTS AS A MIDDLEEWARE TO TELL EXPRESS WHERE WE NEED TO SEARCH STATIC FILE
-app.use(express.static(path.join(__dirname,"/public")))
-//Express uses middleware (like express.json()) to parse the body of the request. This middleware converts the JSON data into a JavaScript object that you can easily work with.
-app.use(express.json())
-app.use(express.urlencoded({extended:false}))
-
-
 //SET VIEW ENGINE AND PATH FOR VIEW
 //The app.set('views', path.join(__dirname, '/resources/views')) line in an Express.js application specifies the directory where the view templates (e.g., EJS files) are located.
 //AS HOME.EJS PRESENT IN VIEWS FOLDER THEN TO SPECIFY SERVER WHERE TO SEARCH EJS FILE WE ARE SETING A PATH
 app.use(expressLayout)
 
 app.set('views',path.join(__dirname,'/resources/views'))
-
 
 //VIEW ENGINE
 app.set("view engine","ejs")
@@ -118,8 +123,95 @@ allroutes=require("./routes/web.js")
 allroutes(app)
 
 
-
 //PORT LISTENING
-app.listen(PORT,()=>{
+const server=app.listen(PORT,()=>{
     console.log(`LISTENING ON ${PORT}`)
 })
+
+
+//SOCKET CONNECTION
+//WE PASSED SERVER TO SOCKET.IO SO THAT SERVER GET READY FOR SOCKET.IO CONNECTION
+//Whenever NEW CLIENT THAT IS /route WILL CONNECTED TO SERVER IT WILL DISPALY NEW CLIENT CONNECTED
+const io=require('socket.io')(server, {
+    cors: {
+      origin: "http://localhost:3000", // Adjust to your client URL
+      methods: ["GET", "POST"]
+    }
+  });
+
+io.on('connection',(socket)=>{
+    console.log("NEW CLIENT CONNECTED")
+    console.log("SOCKET ID",socket.id)
+    //JOIN IN PRIVATE RROM
+    socket.on('join',(orderId)=>{
+        console.log("GOT FROM SOCKET FROM APP.JS->",orderId)
+        socket.join(orderId)
+    })
+    
+})
+
+// io.on('connection', (socket) => {
+//       // Join
+//       //VERFIYION SOCKET WORKS OR NOT
+//       console.log("SOCKET ID",socket.id)
+//       //REVEIVE THE EVENT
+//       socket.on('join', (orderId) => 
+//     {
+//         console.log("EMITTED ORDERID FROM APP->",orderId)
+//         socket.join(orderId)
+//         try 
+//         {
+//             // Join the room
+//             socket.join(orderId);
+      
+//             // If we reach here, it means join operation was successful
+//             console.log(`Client ${socket.id} has successfully joined room: ${orderId}`);
+//         } 
+//         catch (error) 
+//         {
+//             // Handle any potential errors (though join typically doesn't throw)
+//             console.error(`Client ${socket.id} failed to join room: ${orderId}`, error);
+//         }
+//     })
+// })
+
+
+// eventEmitter.on('orderUpdated', (data) => {
+//     io.to(`order_${data.id}`).emit('orderUpdated', data)
+// })
+
+
+
+
+
+//GET THE EMIT
+// eventEmitter.on('orderUpdated',function(data){
+//     console.log("DATA THE HAS BEEN SENT  BY EVENTEMIITER FROM STATUSCONTROLLER",data)
+//     //NOW EMIT A  MESSAGE(DATA) TO PARTICALUR ORDERID ROOM
+//     io.to(`order_${data.id}`).emit('orderUpdated',data)
+// })
+
+// eventEmitter.on('orderUpdated', (data) => {
+//     console.log("DATA THE HAS BEEN SENT  BY EVENTEMIITER FROM STATUSCONTROLLER",data)
+//     io.to(`order_${data.id}`).emit('orderUpdated',data)
+
+// })
+
+// eventEmitter.on('orderUpdated', (data) => {
+//     io.to(`order_${data.id}`).emit('orderUpdated', data)
+// })
+
+// eventEmitter.on('orderPlaced', (data) => {
+//     io.to('adminRoom').emit('orderPlaced', data)
+// })
+
+//LISTENING EVENT EMITTER
+
+eventEmitter.on('orderUpdated',(data)=>{
+    io.to(`order_${data.id}`).emit('orderUpdated',data)
+})
+
+eventEmitter.on('orderPlaced',(data)=>{
+    io.to('adminRoom').emit('orderPlaced',data)
+})
+

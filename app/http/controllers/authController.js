@@ -5,6 +5,7 @@ const bcrypt=require("bcrypt")
 const passport=require("passport")
 
 function authController(){
+    
     return{
         login:function(req,res){
             res.render("auth/login")

@@ -11,9 +11,11 @@ function AdminorderController(){
             //.populate("","-password") WHILE POPULATING DONT GET THE PASSWORD FROM IT 
             //.exec() method in Mongoose is used to execute a query and return a promise. BASICALLY IT ALLOWS TO BRING ALL THE ASYNC CODE IN LINE BY LINE
             let orders=await orderModel.find({status:{ $ne:"completed"}},null,{sort:{'createdAt':1}}).populate('customerId','-password').exec()
+            console.log("ADMIN",orders)
             //IF AXIOS.GET CALL HA BEEN MADE TO THIS ROUTE THEN RETURN json DATA ALONG WITH orders IN IT
             //ELSE RENDER THE admin/orders.ejs
             if(req.xhr){
+                console.log()
                 return res.json(orders)
             }
             res.render("admin/orders.ejs")

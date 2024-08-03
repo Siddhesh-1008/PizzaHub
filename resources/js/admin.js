@@ -1,7 +1,9 @@
 import  axios  from "axios"
 import moment from "moment"
+import Noty from "noty"
 
-function initAdmin()
+
+function initAdmin(socket)
 {
     const orderTableBody=document.querySelector("#orderTableBody")
     let orders=[]
@@ -15,7 +17,7 @@ function initAdmin()
         headers: { "X-Requested-With": "XMLHttpRequest" }
     })
     .then((res) => {
-        orders = res.data;
+        var orders = res.data;
         console.log("DATA THAT HAS BEEN RECEIVING FROM ADMIN.ORDER.JS", res.data);
         markup = generateMarkup(orders);
         orderTableBody.innerHTML = markup; // Use innerHTML instead of innerText to properly render HTML
@@ -52,6 +54,7 @@ function initAdmin()
                 <td class="border px-4 py-2">
                     <div class="inline-block relative w-64">
                         <form action="/admin/order/status" method="POST">
+
                             <input type="hidden" name="orderId" value="${ order._id }">
                             <select name="status" onchange="this.form.submit()"
                                 class="block appearance-none w-full bg-white border border-gray-400 hover:border-gray-500 px-4 py-2 pr-8 rounded shadow leading-tight focus:outline-none focus:shadow-outline">
@@ -70,6 +73,7 @@ function initAdmin()
                                 </option>
                             </select>
                         </form>
+                        
                         <div
                             class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
                             <svg class="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg"
@@ -90,7 +94,21 @@ function initAdmin()
         `
         }).join('')
     }
+    
+    //GET THE MESSAGE THAT IS EMITTED FROM SERVER.JS
+    socket.on('orderPlaced',(ordereddata)=>{
+        new Noty({
+            type: 'success',
+            timeout: 1000,
+            text: 'New Ordered',
+            progressBar: false,
+        }).show();
+        //TO ADD NEW ORDER TO TOP OF THE LIST[]
+        orders.unshift(ordereddata)
+        orderTableBody.innerHTML=''
+        //new orders are append WITH OLD ORDERS
+        orderTableBody.innerHTML=generateMarkup(orders)
+    })
 }
-
 
 export default initAdmin;

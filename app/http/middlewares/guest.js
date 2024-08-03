@@ -4,10 +4,10 @@
 //This middleware ensures that authenticated users are redirected to the home page if they try to access the login or register pages.
 // guest.js
 function guest(req, res, next) {
-    if (req.isAuthenticated()) {
-        return res.redirect('/');
+    if (!req.isAuthenticated()) {
+        return next();
     }
-    next();
+    return res.redirect('/')
 }
 
 module.exports = guest;

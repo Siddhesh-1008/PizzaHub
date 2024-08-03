@@ -41,7 +41,8 @@
                         <tr>
                             <!-- COLUMN 1 DATA -->
                             <td class="border px-4 py-2">
-                                    <a class="link" href="/"><%= order.customerId%></a>
+                                <!-- A LINK CONTAIN ORDER UNIQUEID -->
+                                    <a class="link" href="/customer/orders/<%= order._id%>/<%= order.address%>"> <%= order._id%> </a>
                             </td>
                             <!-- COLUMN 2 DATA -->
                             <td class="border px-4 py-2">

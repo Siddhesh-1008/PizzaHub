@@ -1,0 +1,52 @@
+<!-- SINGLE ORDER PAGE -->
+<section class="status">
+    <div class="container mx-auto">
+
+       <!-- MAKE HEADING'S BOX WIDTH LESS THAN CONTAINER -->
+        <div class="status-box w-2/3 mx-auto">
+             <!-- CREATE HEADING DIVISON -->
+            <div class="flex items-center justify-between mb-12"> 
+                <h1 class="text-xl font-bold">
+                    Track Delievery Status
+                </h1>
+                <h6 class="bg-white py-1 rounded-full px-4 text-green-600 text-xs">
+                    <!-- get object id from order controller -->
+                     ORDER UNIQUE ID:-
+                    <%= orderStatus._id%>
+                </h6>
+
+                <!-- WE HAD USED INPUT BECAUSE WE CAN STORE ORDERSTATUS OBJECT THERE AND THEN ACESS IT IN APP.JS TO GET OREDER STATUS DATA -->
+                <!-- ORDER STATUS IS AN OBJECT AND WE HAVE USED JSON.stringify TO CONVERT OBJECT INTO STRING -->
+              <input id="hiddenInput" type="hidden" value="<%= JSON.stringify(orderStatus)%>">  
+            
+            </div>
+
+            <!-- MAKE USE OF UL AND LI TO SHOW ORDER STATUS -->
+            <ul>
+                <!-- STATUS LINE BASICALLY REFERS TO THE LINE THAT ARE BETWEEN DOTS -->
+                <li class="status_line text-xl pb-16 " data-status="order_placed">
+                    <span>ORDER PLACED</span>
+                </li>
+
+                <li class="status_line text-xl pb-16" data-status="confirmed">
+                    <span>ORDER CONFIRMATION</span>
+                </li>
+
+                <li class="status_line text-xl pb-16" data-status="prepared">
+                    <span>PREPARATION</span>
+                </li>
+
+                <li class="status_line text-xl pb-16" data-status="delivered">
+                    <span>OUT FOR DELEIVERY</span>
+                </li>
+
+                <li class="status_line text-xl" data-status="completed">
+                    <span>COMPLETE</span>
+                </li>
+
+            </ul>
+        </div>
+
+       
+    </div>
+</section>

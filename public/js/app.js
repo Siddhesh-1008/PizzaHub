@@ -32026,9 +32026,12 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
 /* harmony import */ var moment__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! moment */ "./node_modules/moment/moment.js");
 /* harmony import */ var moment__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(moment__WEBPACK_IMPORTED_MODULE_1__);
+/* harmony import */ var noty__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! noty */ "./node_modules/noty/lib/noty.js");
+/* harmony import */ var noty__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(noty__WEBPACK_IMPORTED_MODULE_2__);
 
 
-function initAdmin() {
+
+function initAdmin(socket) {
   var orderTableBody = document.querySelector("#orderTableBody");
   var orders = [];
   var markup;
@@ -32042,7 +32045,7 @@ function initAdmin() {
       "X-Requested-With": "XMLHttpRequest"
     }
   }).then(function (res) {
-    orders = res.data;
+    var orders = res.data;
     console.log("DATA THAT HAS BEEN RECEIVING FROM ADMIN.ORDER.JS", res.data);
     markup = generateMarkup(orders);
     orderTableBody.innerHTML = markup; // Use innerHTML instead of innerText to properly render HTML
@@ -32063,9 +32066,24 @@ function initAdmin() {
     //<form action="/admin/order/status" method="POST"> BASICALLY IT WILL POST THE FORM AND MOVE TO THIS ROUTE /admin/order/status AND THEN CHANGE THE STATUS OF ORDER
     //IF ADMIN IS THE ONE WHICH WILL DETERMINE STATUS IS PALCED CONFIRMED PREPARED DELEIVERD COMPLETED
     return orders.map(function (order) {
-      return "\n                <tr>\n                <td class=\"border px-4 py-2 text-green-900\"> \n                    <p>".concat(order._id, "</p>\n                    <div>").concat(renderItems(order.items), "</div>\n                </td>\n                <td class=\"border px-4 py-2\">").concat(order.customerId.name, "</td>\n                <td class=\"border px-4 py-2\">").concat(order.address, "</td>\n                <td class=\"border px-4 py-2\">\n                    <div class=\"inline-block relative w-64\">\n                        <form action=\"/admin/order/status\" method=\"POST\">\n                            <input type=\"hidden\" name=\"orderId\" value=\"").concat(order._id, "\">\n                            <select name=\"status\" onchange=\"this.form.submit()\"\n                                class=\"block appearance-none w-full bg-white border border-gray-400 hover:border-gray-500 px-4 py-2 pr-8 rounded shadow leading-tight focus:outline-none focus:shadow-outline\">\n                                <option value=\"order_placed\"\n                                    ").concat(order.status === 'order_placed' ? 'selected' : '', ">\n                                    Placed</option>\n                                <option value=\"confirmed\" ").concat(order.status === 'confirmed' ? 'selected' : '', ">\n                                    Confirmed</option>\n                                <option value=\"prepared\" ").concat(order.status === 'prepared' ? 'selected' : '', ">\n                                    Prepared</option>\n                                <option value=\"delivered\" ").concat(order.status === 'delivered' ? 'selected' : '', ">\n                                    Delivered\n                                </option>\n                                <option value=\"completed\" ").concat(order.status === 'completed' ? 'selected' : '', ">\n                                    Completed\n                                </option>\n                            </select>\n                        </form>\n                        <div\n                            class=\"pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700\">\n                            <svg class=\"fill-current h-4 w-4\" xmlns=\"http://www.w3.org/2000/svg\"\n                                viewBox=\"0 0 20 20\">\n                                <path\n                                    d=\"M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z\" />\n                            </svg>\n                        </div>\n                    </div>\n                </td>\n                <td class=\"border px-4 py-2\">\n                    ").concat(moment__WEBPACK_IMPORTED_MODULE_1___default()(order.createdAt).format('hh:mm A'), "\n                </td>\n                <td class=\"border px-4 py-2\">\n                    ").concat(order.paymentStatus ? 'paid' : 'Not paid', "\n                </td>\n            </tr>\n        ");
+      return "\n                <tr>\n                <td class=\"border px-4 py-2 text-green-900\"> \n                    <p>".concat(order._id, "</p>\n                    <div>").concat(renderItems(order.items), "</div>\n                </td>\n                <td class=\"border px-4 py-2\">").concat(order.customerId.name, "</td>\n                <td class=\"border px-4 py-2\">").concat(order.address, "</td>\n                <td class=\"border px-4 py-2\">\n                    <div class=\"inline-block relative w-64\">\n                        <form action=\"/admin/order/status\" method=\"POST\">\n\n                            <input type=\"hidden\" name=\"orderId\" value=\"").concat(order._id, "\">\n                            <select name=\"status\" onchange=\"this.form.submit()\"\n                                class=\"block appearance-none w-full bg-white border border-gray-400 hover:border-gray-500 px-4 py-2 pr-8 rounded shadow leading-tight focus:outline-none focus:shadow-outline\">\n                                <option value=\"order_placed\"\n                                    ").concat(order.status === 'order_placed' ? 'selected' : '', ">\n                                    Placed</option>\n                                <option value=\"confirmed\" ").concat(order.status === 'confirmed' ? 'selected' : '', ">\n                                    Confirmed</option>\n                                <option value=\"prepared\" ").concat(order.status === 'prepared' ? 'selected' : '', ">\n                                    Prepared</option>\n                                <option value=\"delivered\" ").concat(order.status === 'delivered' ? 'selected' : '', ">\n                                    Delivered\n                                </option>\n                                <option value=\"completed\" ").concat(order.status === 'completed' ? 'selected' : '', ">\n                                    Completed\n                                </option>\n                            </select>\n                        </form>\n                        \n                        <div\n                            class=\"pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700\">\n                            <svg class=\"fill-current h-4 w-4\" xmlns=\"http://www.w3.org/2000/svg\"\n                                viewBox=\"0 0 20 20\">\n                                <path\n                                    d=\"M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z\" />\n                            </svg>\n                        </div>\n                    </div>\n                </td>\n                <td class=\"border px-4 py-2\">\n                    ").concat(moment__WEBPACK_IMPORTED_MODULE_1___default()(order.createdAt).format('hh:mm A'), "\n                </td>\n                <td class=\"border px-4 py-2\">\n                    ").concat(order.paymentStatus ? 'paid' : 'Not paid', "\n                </td>\n            </tr>\n        ");
     }).join('');
   }
+
+  //GET THE MESSAGE THAT IS EMITTED FROM SERVER.JS
+  socket.on('orderPlaced', function (ordereddata) {
+    new noty__WEBPACK_IMPORTED_MODULE_2___default.a({
+      type: 'success',
+      timeout: 1000,
+      text: 'New Ordered',
+      progressBar: false
+    }).show();
+    //TO ADD NEW ORDER TO TOP OF THE LIST[]
+    orders.unshift(ordereddata);
+    orderTableBody.innerHTML = '';
+    //new orders are append WITH OLD ORDERS
+    orderTableBody.innerHTML = generateMarkup(orders);
+  });
 }
 /* harmony default export */ __webpack_exports__["default"] = (initAdmin);
 
@@ -32084,11 +32102,20 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var noty__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! noty */ "./node_modules/noty/lib/noty.js");
 /* harmony import */ var noty__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(noty__WEBPACK_IMPORTED_MODULE_1__);
 /* harmony import */ var _admin__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./admin */ "./resources/js/admin.js");
+/* harmony import */ var moment__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! moment */ "./node_modules/moment/moment.js");
+/* harmony import */ var moment__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(moment__WEBPACK_IMPORTED_MODULE_3__);
+function _typeof(o) { "@babel/helpers - typeof"; return _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (o) { return typeof o; } : function (o) { return o && "function" == typeof Symbol && o.constructor === Symbol && o !== Symbol.prototype ? "symbol" : typeof o; }, _typeof(o); }
+function ownKeys(e, r) { var t = Object.keys(e); if (Object.getOwnPropertySymbols) { var o = Object.getOwnPropertySymbols(e); r && (o = o.filter(function (r) { return Object.getOwnPropertyDescriptor(e, r).enumerable; })), t.push.apply(t, o); } return t; }
+function _objectSpread(e) { for (var r = 1; r < arguments.length; r++) { var t = null != arguments[r] ? arguments[r] : {}; r % 2 ? ownKeys(Object(t), !0).forEach(function (r) { _defineProperty(e, r, t[r]); }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(e, Object.getOwnPropertyDescriptors(t)) : ownKeys(Object(t)).forEach(function (r) { Object.defineProperty(e, r, Object.getOwnPropertyDescriptor(t, r)); }); } return e; }
+function _defineProperty(e, r, t) { return (r = _toPropertyKey(r)) in e ? Object.defineProperty(e, r, { value: t, enumerable: !0, configurable: !0, writable: !0 }) : e[r] = t, e; }
+function _toPropertyKey(t) { var i = _toPrimitive(t, "string"); return "symbol" == _typeof(i) ? i : i + ""; }
+function _toPrimitive(t, r) { if ("object" != _typeof(t) || !t) return t; var e = t[Symbol.toPrimitive]; if (void 0 !== e) { var i = e.call(t, r || "default"); if ("object" != _typeof(i)) return i; throw new TypeError("@@toPrimitive must return a primitive value."); } return ("string" === r ? String : Number)(t); }
 console.log("HELLO FROM APP.JS");
 
 
 //IMPORT ADMIN.JS HERE
 //import{name what u had exported from admin.js} from "path where the admin.js is located "
+
 
 
 // QUERYSELECTOR ALL RETURNS ARRAY OF BUTTONS THAT HAS CLASS .add-to-cart
@@ -32130,7 +32157,7 @@ addToCart.forEach(function (btn) {
     //BASICALLY THE DATA COMING FROM HOME.EJS IS IN STRING FORMAT TO CONVERT IT INTO OBJECT WE NEED TO PARSE IT
     //OBJECT IN STRING FORMAT
     //let pizza=btn.dataset.pizza
-    //CONVERTING OBJECT IN STRING FORMAT AGAIN TO OBJECT
+    //CONVERTING OBJECT IN STRING FORMAT THEN AGAIN TO OBJECT
     var pizza = JSON.parse(btn.dataset.pizza);
     console.log(pizza);
     //CALLING UPDATE CART FUNCTION
@@ -32147,8 +32174,102 @@ if (alertMsg) {
   }, 2000);
 }
 
+//SINGLE ORDER PAGE
+//GET ALL THE LI TAGS FROM SINGLEORDER.EJS HERE STATUSES WILL BE ARRAY OF LI TAGS
+var statuses = document.querySelectorAll('.status_line');
+console.log("ALL STATAUS LINE", statuses);
+
+//IF WE HAVE ORDER STATUS IN INPUT TAG THEN GET THE VALUE FROM IT ELSE IF NOT THEN GIVE NULLL
+//TERNIARY OPERATOR
+var hiddenInput = document.querySelector("#hiddenInput");
+var order = hiddenInput ? hiddenInput.value : null;
+console.log("ACCESING INPUT TAG TO GET DATA  FROM SINGLEORDER.EJS ", order);
+
+//CONVERT ORDER STRING INTO ORDER OBJECT
+order = JSON.parse(order);
+console.log("CONVERT ORDER STRING INTO ORDER OBJECT->", order);
+
+//ORDER STATUS TIME
+var time = document.createElement('small');
+time.classList.add("small");
+
+//ADD DIFERENT CLASSES TO <ul><li></li></ul> BASED ON STATUS THAT WE ARE GETTING FROM ORDER.JS 
+//data-status="value"  WE CAN GET THE VALUE WITH THE HELP OF DATASET.STATUS
+function updateStatus(order) {
+  statuses.forEach(function (status) {
+    status.classList.remove('step-completed');
+    status.classList.remove('current');
+  });
+  var stepCompleted = true;
+  statuses.forEach(function (status) {
+    console.log("CURRENT LI TAG->", status);
+    //BASICALLY status WILL CONTAIN EACH <li><li> TAG THEN EACH li HAVE data-status="value" WE CAN GET IT WITH THE HELP OF stat.dataset.status
+    //dataprop will contain orderplaced or orderconfirmation or preparation or outfordelievery or complete
+    var dataProp = status.dataset.status;
+    //FIRST <li></li> WILL ALWAYS BE ADDED WITH CLASS step-completed BECAUSE IT IS ORDER PALCED
+    if (stepCompleted) {
+      //HINT IF WE WANT TO APPEND THE NEW CLASS NAME BY KEEPING OLD NAME ALSO
+      //CHANGE THE COLOR OF LINE DOTS AND TEXT
+      status.classList.add('step-completed');
+    }
+    //THEN COME TO NEXT LINK
+    //IF THAT  li data-status IS EQL TO DATABASE ORDER STATUS THEN THAT li WILL GET ADDED WITH CALSSLIST classList.add('step-completed') MEANS THAT WILL GET GRAY AND NEXT SIBLING WILL GET ORANGE
+    if (dataProp == order.status) {
+      stepCompleted = false;
+      // DISPLAY THE TIME OF STATUS UPDATED
+      time.innerText = moment__WEBPACK_IMPORTED_MODULE_3___default()(order.updatedAt).format("hh:mm A");
+      //time THAT IS SMALL TAG WILL BE ADDED AFTER SPAN TAG <span></span><small></small>
+      status.appendChild(time);
+      //CHECK FIRST NEXT ELEMENT IS PRESENT OR NOT IF PRESENT THEN ONLY ADD CLAASS LIST OF CURRENT OTHERWISE NOT
+      if (status.nextElementSibling) {
+        //CURRENT BASICALLY REFERS TO ORANGE COLOR INDICATING THE CURRENT STATUS
+        status.nextElementSibling.classList.add('current');
+      }
+    }
+  });
+}
+updateStatus(order);
+
+//SOCKET
+var socket = io('http://localhost:3000'); // Replace with your server URL
 //THIS WILL CALLED initAdmin FUNCTION WHICH HAS BENN EXPORTED BY ADMIN.JS MODEL
-Object(_admin__WEBPACK_IMPORTED_MODULE_2__["default"])();
+Object(_admin__WEBPACK_IMPORTED_MODULE_2__["default"])(socket);
+//WHENVER U VISIT customer/order/order_id ROUTE IT WILL EMIT EVENT join AND SENT ORDERID TO SERVER 
+//JOIN
+//SEE AS APP.JS IS COOMON FOR ALL ROUTES AS IT IS PRESNT IN LAYOUT.EJS FILE
+//SECONDLY IF U VISIT ANY ROUTE U WILL ABLE TO SEE IN CONSOLE THAT NEW CLIENT CONNECTED AS APP.JS GETS EXECUTE AT EVERY ROUTE
+//BUT WHEN U VISIT customer/order/order_id ROUTE THEN AT THAT TIME U RENDER customer/singleorder.EJS FILE 
+//THIS customer/singleorder.EJS FILE SENTS ORDER STATUS AND APP.JS  STORES IT IN order
+//THEN BELOW CODE GETS EXECUTED AS WE HAVE order BECAUSE OF IT SOCKET WILL EMIT join EVENT AS WELL AS MESSAGE 
+//WHICH HAS BEEN RECEIVED ON SERVER SIDE
+if (order) {
+  socket.emit('join', "order_".concat(order._id));
+}
+
+//GET THE PATH WHERE ADMIN HAS BEEN OPOENED
+//ADMIN JOINING TO PRIVATE ROOM
+var adminAreaPath = window.location.pathname;
+console.log("ADMIN PATH->", adminAreaPath);
+//TO IDENTIFY WHETEHR IT IS AN ADMIN PATH MAKE USE OF INCLUDE adminAreaPath.include(name)
+if (adminAreaPath.includes('admin')) {
+  socket.emit('join', 'adminRoom');
+}
+
+//
+socket.on('orderUpdated', function (data) {
+  //MAKE USE OF SRPREAD OPERATOR TO GET ORDERMODEL
+  var updatedOrder = _objectSpread({}, order);
+  updatedOrder.updatedAt = moment__WEBPACK_IMPORTED_MODULE_3___default()().format;
+  updatedOrder.status = data.status;
+  updateStatus(updatedOrder);
+  new noty__WEBPACK_IMPORTED_MODULE_1___default.a({
+    type: 'success',
+    timeout: 1000,
+    text: 'Order updated',
+    progressBar: false
+  }).show();
+  console.log("data fromserver->", data);
+});
 
 /***/ }),
 
