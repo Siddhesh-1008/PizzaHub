@@ -208,10 +208,11 @@ io.on('connection',(socket)=>{
 //LISTENING EVENT EMITTER
 
 eventEmitter.on('orderUpdated',(data)=>{
+    console.log(data)
     io.to(`order_${data.id}`).emit('orderUpdated',data)
 })
 
-eventEmitter.on('orderPlaced',(data)=>{
-    io.to('adminRoom').emit('orderPlaced',data)
+eventEmitter.on('orderPlaced',(result)=>{
+    io.to('adminRoom').emit('orderPlaced',result)
 })
 

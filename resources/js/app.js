@@ -66,8 +66,6 @@ if(alertMsg){
     },2000)
 }
 
-
-
 //SINGLE ORDER PAGE
 //GET ALL THE LI TAGS FROM SINGLEORDER.EJS HERE STATUSES WILL BE ARRAY OF LI TAGS
 let statuses=document.querySelectorAll('.status_line')
@@ -111,12 +109,15 @@ function updateStatus(order){
         }
         //THEN COME TO NEXT LINK
         //IF THAT  li data-status IS EQL TO DATABASE ORDER STATUS THEN THAT li WILL GET ADDED WITH CALSSLIST classList.add('step-completed') MEANS THAT WILL GET GRAY AND NEXT SIBLING WILL GET ORANGE
-        if(dataProp==order.status)
+        if(dataProp===order.status)
         {
             stepCompleted=false
             // DISPLAY THE TIME OF STATUS UPDATED
-            time.innerText=moment(order.updatedAt).format("hh:mm A")
+            time.innerText=order.updatedAt
             //time THAT IS SMALL TAG WILL BE ADDED AFTER SPAN TAG <span></span><small></small>
+            if (order.updatedAt === "Invalid date") {
+                console.error("Invalid date format for updatedAt:", order.updatedAt);
+            }
             status.appendChild(time)
             //CHECK FIRST NEXT ELEMENT IS PRESENT OR NOT IF PRESENT THEN ONLY ADD CLAASS LIST OF CURRENT OTHERWISE NOT
             if(status.nextElementSibling)
@@ -138,7 +139,9 @@ updateStatus(order)
 //SOCKET
 let socket=io('http://localhost:3000'); // Replace with your server URL
 //THIS WILL CALLED initAdmin FUNCTION WHICH HAS BENN EXPORTED BY ADMIN.JS MODEL
+
 initAdmin(socket)
+
 //WHENVER U VISIT customer/order/order_id ROUTE IT WILL EMIT EVENT join AND SENT ORDERID TO SERVER 
 //JOIN
 //SEE AS APP.JS IS COOMON FOR ALL ROUTES AS IT IS PRESNT IN LAYOUT.EJS FILE
@@ -148,6 +151,7 @@ initAdmin(socket)
 //THEN BELOW CODE GETS EXECUTED AS WE HAVE order BECAUSE OF IT SOCKET WILL EMIT join EVENT AS WELL AS MESSAGE 
 //WHICH HAS BEEN RECEIVED ON SERVER SIDE
 if(order){
+    console.log("Order object:", order);
     socket.emit('join',`order_${order._id}`)
 }
 
@@ -156,16 +160,17 @@ if(order){
 let adminAreaPath=window.location.pathname
 console.log("ADMIN PATH->",adminAreaPath)
 //TO IDENTIFY WHETEHR IT IS AN ADMIN PATH MAKE USE OF INCLUDE adminAreaPath.include(name)
-if(adminAreaPath.includes('admin')){
+if(adminAreaPath.includes('admin'))
+{
     socket.emit('join','adminRoom')
 }
 
-//
 socket.on('orderUpdated',(data)=>{
     //MAKE USE OF SRPREAD OPERATOR TO GET ORDERMODEL
     const updatedOrder={...order}
-    updatedOrder.updatedAt=moment().format
+    updatedOrder.updatedAt=moment(data.updatedAt).format("hh:mm A")
     updatedOrder.status=data.status
+    console.log("Updated Order->",updatedOrder);
     updateStatus(updatedOrder)
     new Noty({
         type: 'success',

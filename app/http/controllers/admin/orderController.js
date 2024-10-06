@@ -10,7 +10,9 @@ function AdminorderController(){
             //.POPULATE(IDENTITY WHERE U HAVE USED REF:USER) THIS BASICALLY MEANS CUSTOMER ID HAS LOGGED IN USER ID WITH THE HELP OF THIS WE CAN EASILY BRING WHOLE IDENTITY OF A USER IN CUSTOMER ID
             //.populate("","-password") WHILE POPULATING DONT GET THE PASSWORD FROM IT 
             //.exec() method in Mongoose is used to execute a query and return a promise. BASICALLY IT ALLOWS TO BRING ALL THE ASYNC CODE IN LINE BY LINE
-            let orders=await orderModel.find({status:{ $ne:"completed"}},null,{sort:{'createdAt':1}}).populate('customerId','-password').exec()
+            let orders=await orderModel.find({status:{$ne:"completed"}},null,{sort:{'createdAt':-1}})
+            .populate('customerId','-password')
+            .exec()
             console.log("ADMIN",orders)
             //IF AXIOS.GET CALL HA BEEN MADE TO THIS ROUTE THEN RETURN json DATA ALONG WITH orders IN IT
             //ELSE RENDER THE admin/orders.ejs
